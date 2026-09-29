@@ -47,7 +47,19 @@ def find_duplicates(lst):
     """Devuelve los elementos que aparecen más de una vez en lst,
     preservando el orden de su primera repetición y sin duplicados.
     """
-    pass
+    vistos = set()
+    duplicados_set = set()
+    duplicados = []
+    
+    for ele in lst:
+        if ele in vistos:
+            if ele not in duplicados_set:
+                duplicados_set.add(ele)
+                duplicados.append(ele)
+        else:
+            vistos.add(ele)
+
+    return duplicados
 
 # I.A.3 Búsqueda de par que suma target con complejidad O(n)
 def has_sum_pair(par):
