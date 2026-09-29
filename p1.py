@@ -64,9 +64,9 @@ def dataprep_rle(n):
     while(bucle):
         value = random.randint(1, 10 * n)
         racha = random.randint(1, n / 5)
-        for _ in range(racha)
+        for _ in range(racha):
             data_list.append(value)
-            if len(data_list) == n 
+            if len(data_list) == n:
                 bucle = False
                 break
     
@@ -99,7 +99,7 @@ def has_sum_pair(par):
     lst, target = par
     
     data_set = set(lst)
-    
+
 
 
 # I.B.1 RLE Naive / Ingenuo
@@ -154,3 +154,8 @@ def plot_single_curve(
         )  #
 
     plt.show()  # Muestra la figura
+
+Nlst = [10, 20, 30]
+res = time_measure(has_sum_pair, dataprep_sum_pair_hit, Nlst)
+print(res)
+plot_single_curve(Nlst, res)
