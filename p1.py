@@ -1,4 +1,4 @@
-    import time # Para la función time_measure. Entender código dado.
+import time # Para la función time_measure. Entender código dado.
 import matplotlib.pyplot as plt # Para imprimir gráficas. Entender código dado.
 import random # Puede usarse random.randint(n, m) para generar listas aleatorias de enteros en las funciones dataprep.
 
