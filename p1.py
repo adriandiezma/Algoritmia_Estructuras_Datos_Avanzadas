@@ -100,6 +100,14 @@ def has_sum_pair(par):
     
     data_set = set(lst)
 
+    # Queremos ver si exste un elemento "search" en el set que sumado con "elem" dé "target" -> elem + search = target -> search = target - elem
+    for elem in lst:
+        search = target - elem
+        if search in data_set: 
+            return True
+    
+    return False
+
 
 
 # I.B.1 RLE Naive / Ingenuo
@@ -155,7 +163,7 @@ def plot_single_curve(
 
     plt.show()  # Muestra la figura
 
-Nlst = [10, 20, 30]
+Nlst = [10, 100, 1000, 10000]
 res = time_measure(has_sum_pair, dataprep_sum_pair_hit, Nlst)
 print(res)
 plot_single_curve(Nlst, res)
