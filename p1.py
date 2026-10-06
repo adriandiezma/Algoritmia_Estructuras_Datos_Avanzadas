@@ -104,9 +104,26 @@ def has_sum_pair(par):
 
 # I.B.1 RLE Naive / Ingenuo
 def rle_encode_naive(lst):
-    """Codificación RLE utilizando operador + concatenador de listas."""
-    pass
 
+    if lst == []:
+        return []
+    
+    lst_final = []
+    count = 0
+    aux = lst[0]
+
+    for elem in lst:
+        if elem != aux:
+            lst_final = lst_final + [(aux, count)]
+            count = 1
+            aux = elem
+        else:
+            count += 1
+
+    lst_final = lst_final + [(aux, count)]
+
+    return lst_final
+        
 # I.B.2 RLE Optimized / Óptimo
 def rle_encode_optimized(lst):
     """Codificación RLE optimizada usando append in-place."""
