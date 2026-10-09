@@ -112,32 +112,52 @@ def has_sum_pair(par):
 
 # I.B.1 RLE Naive / Ingenuo
 def rle_encode_naive(lst):
-
-    if lst == []:
+    """Codificación RLE utilizando operador + concatenador de listas."""
+    if not lst:
         return []
     
     lst_final = []
-    count = 0
-    aux = lst[0]
+    count = 1
+    aux = lst[0] # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
 
-    # El primer elemento de la lista siempre entra al "else", iniciando la cuenta en 1
-    # (por eso se declaró count = 0)
-    for elem in lst:
-        if elem != aux:
+    for i in range(1, len(lst)): # Se empieza desde la segunda posición de la lista.
+        elem = lst[i]
+        if elem == aux:
+            count += 1
+
+        else:
             lst_final = lst_final + [(aux, count)]
             count = 1
             aux = elem
-        else:
-            count += 1
 
-    lst_final = lst_final + [(aux, count)]
+    lst_final = lst_final + [(aux, count)] # Añadimos el último caso tras salir del bucle.
 
     return lst_final
         
 # I.B.2 RLE Optimized / Óptimo
 def rle_encode_optimized(lst):
     """Codificación RLE optimizada usando append in-place."""
-    pass
+
+    if not lst:
+        return []
+
+    lst_final = []
+    aux = lst[0] # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    count = 1
+
+    for i in range(1, len(lst)): # Se empieza desde la segunda posición de la lista.
+        elem = lst[i]
+        if elem == aux:
+            count += 1
+
+        else:
+            lst_final.append((aux, count))
+            aux = elem
+            count = 1
+
+    lst_final.append((aux, count)) # Añadimos el último caso tras salir del bucle.
+
+    return lst_final
 
 # Función auxiliar para generar una gráfica de una serie de datos.
 def plot_single_curve(
