@@ -120,6 +120,8 @@ def rle_encode_naive(lst):
     count = 0
     aux = lst[0]
 
+    # El primer elemento de la lista siempre entra al "else", iniciando la cuenta en 1
+    # (por eso se declaró count = 0)
     for elem in lst:
         if elem != aux:
             lst_final = lst_final + [(aux, count)]
