@@ -59,18 +59,19 @@ def dataprep_rle(n):
     Devuelve una lista.
     """
     data_list = []
-    bucle = True
-
-    while(bucle):
-        value = random.randint(1, 10 * n)
-        racha = random.randint(1, n / 5)
-        for _ in range(racha):
-            data_list.append(value)
-            if len(data_list) == n:
-                bucle = False
-                break
     
-    return data_list
+    while len(data_list) < n:
+        val = random.randint(1, 100)
+
+        # Elegimos cuántas veces repetir el valor.
+        racha = random.randint(2, 5)
+
+        # Añadimos "racha" veces el elemento "val" al final de la lista.
+        for _ in range(racha):
+            data_list.append(val)
+
+    # Recortamos la lista a tamaño n por si nos pasamos de elementos.
+    return data_list[:n]
 
 # I.A.2 Búsqueda de duplicados manteniendo orden de aparición
 def find_duplicates(lst):
@@ -108,8 +109,6 @@ def has_sum_pair(par):
     
     return False
 
-
-
 # I.B.1 RLE Naive / Ingenuo
 def rle_encode_naive(lst):
     """Codificación RLE utilizando operador + concatenador de listas."""
@@ -118,9 +117,11 @@ def rle_encode_naive(lst):
     
     lst_final = []
     count = 1
-    aux = lst[0] # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    aux = lst[0] 
 
-    for i in range(1, len(lst)): # Se empieza desde la segunda posición de la lista.
+    # Se empieza desde la segunda posición de la lista.
+    for i in range(1, len(lst)):
         elem = lst[i]
         if elem == aux:
             count += 1
@@ -130,7 +131,8 @@ def rle_encode_naive(lst):
             count = 1
             aux = elem
 
-    lst_final = lst_final + [(aux, count)] # Añadimos el último caso tras salir del bucle.
+    # Añadimos el último caso tras salir del bucle.
+    lst_final = lst_final + [(aux, count)]
 
     return lst_final
         
@@ -142,10 +144,13 @@ def rle_encode_optimized(lst):
         return []
 
     lst_final = []
-    aux = lst[0] # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    
+    # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    aux = lst[0] 
     count = 1
 
-    for i in range(1, len(lst)): # Se empieza desde la segunda posición de la lista.
+    # Se empieza desde la segunda posición de la lista.
+    for i in range(1, len(lst)):
         elem = lst[i]
         if elem == aux:
             count += 1
@@ -155,7 +160,8 @@ def rle_encode_optimized(lst):
             aux = elem
             count = 1
 
-    lst_final.append((aux, count)) # Añadimos el último caso tras salir del bucle.
+    # Añadimos el último caso tras salir del bucle.
+    lst_final.append((aux, count))
 
     return lst_final
 
@@ -197,12 +203,12 @@ def plot_single_curve(
     # Guarda la gráfica en un fichero si se especifica un nombre
     if filename:
         plt.savefig(
-            filename, format=filename.split(".")[-1], dpi=300
+            filename, format=filename.split(".")[-1], dpi=1200
         )  #
 
     plt.show()  # Muestra la figura
 
-Nlst = [10, 100, 1000, 10000]
-res = time_measure(has_sum_pair, dataprep_sum_pair_hit, Nlst)
+Nlst = [10, 100, 1000, 2500, 5000, 10000]
+res = time_measure(rle_encode_naive, dataprep_rle, Nlst)
 print(res)
-plot_single_curve(Nlst, res)
+plot_single_curve(Nlst, [tupla[0] for tupla in res], "Tiempo de ejecución: RLE Naive", "Dimensión (n)", "Tiempo medio (s)", filename="rle_naive.jpg")
