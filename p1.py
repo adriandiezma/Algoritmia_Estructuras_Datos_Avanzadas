@@ -208,7 +208,8 @@ def plot_single_curve(
 
     plt.show()  # Muestra la figura
 
-Nlst = [10, 100, 1000, 2500, 5000, 10000]
-res = time_measure(rle_encode_naive, dataprep_rle, Nlst)
+Nlst = [10, 50, 100, 500, 1000, 2500, 5000, 10000]
+res = time_measure(rle_encode_optimized, dataprep_rle, Nlst)
 print(res)
-plot_single_curve(Nlst, [tupla[0] for tupla in res], "Tiempo de ejecución: RLE Naive", "Dimensión (n)", "Tiempo medio (s)", filename="rle_naive.jpg")
+medias =  [tupla[0] for tupla in res]
+plot_single_curve(Nlst, medias, "Tiempo de ejecución: RLE Optimized", "Dimensión (n)", "Tiempo medio (s)", color="g", filename="rle_optimized10k.jpg")
