@@ -1,6 +1,7 @@
 import time # Para la función time_measure. Entender código dado.
 import matplotlib.pyplot as plt # Para imprimir gráficas. Entender código dado.
 import random # Puede usarse random.randint(n, m) para generar listas aleatorias de enteros en las funciones dataprep.
+import numpy as np 
 
 # I.A.1 Medición de tiempos de ejecución
 def time_measure(f, dataprep, Nlist, Nrep=1000, Nstat=100):
@@ -46,11 +47,17 @@ def dataprep_sum_pair_miss(n):
     Devuelve una tupla (lista, target)
     """
     data_list = []
-    target = (2 * 10 * n) + 1
+    target = random.randint(2, 2 * 10 * n)
 
     for _ in range(n):
-        value = random.randint(1, 10 * n)
-        data_list.append(value)
+        while(True):
+            value = random.randint(1, 10 * n)
+            data_list.append(value)
+            if(has_sum_pair((data_list, target)) == False):
+                break
+            else:
+                data_list.pop()
+            
 
     return (data_list, target)
 
@@ -98,13 +105,14 @@ def has_sum_pair(par):
     """
     lst, target = par
     
-    data_set = set(lst)
+    vistos = set()
 
     # Queremos ver si exste un elemento "search" en el set que sumado con "elem" dé "target" -> elem + search = target -> search = target - elem
     for elem in lst:
         search = target - elem
-        if search in data_set: 
+        if search in vistos: 
             return True
+        vistos.add(elem)
     
     return False
 
@@ -163,7 +171,51 @@ def plot_single_curve(
 
     plt.show()  # Muestra la figura
 
-Nlst = [10, 100, 1000, 10000]
-res = time_measure(has_sum_pair, dataprep_sum_pair_hit, Nlst)
-print(res)
-plot_single_curve(Nlst, res)
+#Nlst = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
+#res = time_measure(has_sum_pair, dataprep_sum_pair_miss, Nlst)
+#print(res)
+#plot_single_curve(Nlst, res)
+
+
+# II: Conjuntos Disjuntos
+
+def init_cd(n: int)-> np.ndarray:
+    """Genera un array de n enteros con todas sus posiciones inicializadas a -1"""
+    p_cd = np.full(n, -1, dtype = int)
+    return p_cd
+
+def find1(ind: int, p_cd: np.ndarray)-> int:
+    """devuelve el representante del índice ind en el conjunto disjunto almacenado en p_cd realizando compresión de caminos"""
+    for _ in range(len(p_cd)):
+        if(p_cd[ind] == -1):
+            return ind
+        else:
+            ind = p_cd[ind]
+    
+    return -2
+
+def union(rep_1: int, rep_2: int, p_cd: np.ndarray)-> int:
+    """Devuelve el representante del conjunto obtenido como la unión por rangos de los representados 
+    por los índices rep_1, rep_2 en el conjunto disjunto almacenado en el array p_cd.
+    """
+    if rep_1 != rep_2 and p_cd[rep_1] < 0 and p[rep_2] < 0:
+        if p_cd[rep_1] < p_cd[rep_2]: # El representante rep_1 es de mayor dimensión que el representante rep_2 -> rep_1 el padre
+            p_cd[rep_2] = rep_1
+            return rep_1
+        else: # El representante rep_2 es de mayor o igual dimensión que el representante rep_1 -> rep_2 el padre
+            if p_cd[rep_1] == p_cd[rep_2]:
+                p_cd[rep2] = p_cd[rep_2] -1
+            p_cd[rep_1] = rep_2
+            return rep_2
+
+    return -2
+
+def find(ind: int, p_cd: np.ndarray)-> int:
+    """devuelve el representante del índice ind en el conjunto disjunto almacenado en p_cd realizando compresión de caminos"""
+    if(p_cd[ind] < 0):
+        return ind
+    else:
+        padre = p_cd[ind]
+        rep = find(padre, p_cd)
+    p_cd[ind] = rep 
+    return rep

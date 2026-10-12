@@ -1,0 +1,214 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage[spanish]{babel}
+% Reducimos ligeramente los márgenes para aprovechar el folio
+\usepackage[a4paper, margin=2cm]{geometry} 
+
+\title{I.A.4 e I.B.3 — Medición del rendimiento}
+\author{Adrián Diezma Castro y Marcos Delgado Ruiz}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+Hemos analizado el tiempo de ejecución de \texttt{has\_sum\_pair} para listas de longitud:\\ 
+\indent10, 20, 50, 100, 200, 500, 1000, 2000, 5000 y 10000.
+
+\section{Resultados: Gráficas de Convergencia de has\_sum\_pair}
+
+% CASO 1: HIT (Gráfica normal + Zoom)
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.68\linewidth]{Figure_1.png}
+    \caption{Gráfica donde sí existen pares que suman target}
+    \label{fig:hit}
+    
+    \vspace{1cm} % Espacio reducido entre las dos imágenes
+    
+    \includegraphics[width=0.68\linewidth]{Figure_1zoom.png}
+    \caption{Versión ampliada de la Figura 1}
+    \label{fig:hit_zoom}
+\end{figure}
+
+\clearpage % Forza el salto a la página 2 para la segunda pareja de gráficas
+
+% CASO 2: MISS (Gráfica normal + Zoom)
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.68\linewidth]{Figure_1miss2.png}
+    \caption{Gráfica donde no existen pares que suman target}
+    \label{fig:miss}
+    
+    \vspace{1cm}
+    
+    \includegraphics[width=0.68\linewidth]{Figure_1misszoom2.png}
+    \caption{Versión ampliada de la Figura 3}
+    \label{fig:miss_zoom}
+\end{figure}
+
+\section{Preguntas a responder: I.A.4}
+
+\subsection{Caso 1: Sí existen pares que suman target}
+
+\vspace{0.5cm}
+
+\begin{enumerate}
+    \item \textbf{¿Cómo varía el tiempo de ejecución a medida que crece $n$?}
+
+    \vspace{0.5cm}
+    
+    Vemos como en general la pendiente del tiempo tiende a disminuir ligeramente o mantenerse, excepto de 500 a 1000 que aumenta ligeramente. Por lo que el tiempo tiende a aumentar de manera lineal o ligeramente sublineal a medida que $n$ crece.
+    
+\vspace{0.5cm}
+
+    \item \textbf{¿Mantiene la función una complejidad temporal de $O(n)$?}
+    \vspace{0.5cm}
+    
+    Sí, la función mantiene una complejidad $O(n)$, ya que los tiempos de ejecución se mantienen por debajo o ajustados a un crecimiento lineal y la notación $O(n)$ es una cota superior que representa ese crecimiento lineal.
+\end{enumerate}
+
+\vspace{1.5cm}
+
+\subsection{Caso 2: No existen pares que suman target}
+
+\vspace{0.5cm}
+
+\begin{enumerate}
+    \item \textbf{¿Cómo varía el tiempo de ejecución a medida que crece $n$?}
+
+    \vspace{0.5cm}
+    
+    Vemos como en general la pendiente del tiempo tiende a mantenerse, excepto por pequeñas variaciones que se dan en la practica. Por lo que el tiempo tiende a aumentar de manera lineal a medida que $n$ crece.
+
+    \item \textbf{¿Mantiene la función una complejidad temporal de $O(n)$?}
+    \vspace{0.5cm}
+    
+    Sí, la función mantiene una complejidad $O(n)$, ya que los tiempos de ejecución se mantienen ajustados a un crecimiento lineal y la notación $O(n)$ es una cota superior que representa ese crecimiento lineal.
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\subsection{Observaciones}
+\vspace{0.5cm}
+Vemos como el tiempo de ejecución es mayor en el caso donde no existen pares que suman target, esto es 
+\indent porque has\_sum\_pair tiene que recorrer la lista entera, mientras que en el caso donde sí existen, termina de \indent recorrer la lista al encontrar ese par que suma target. 
+
+\vspace{0.2cm}
+
+ \indent Además vemos como el tiempo de ejecución tiende a ser aproximadamente la mitad para el caso donde sí \indent existen pares ($1,37 \times 10^{-6}$ frente a $2,24 \times 10^{-6}$ segundos para la lista de 50 elementos o $2,11 \times 10^{-6}$ frente \indent a $5,10 \times 10^{-6}$ segundos para la lista de 100 elementos). Esto es porque de media el target se encontrará \indent aproximadamete en la mitad de la lista por lo que has\_sum\_pair recorrerá la mitad de elementos.
+
+\vspace{1.5cm}
+
+\section{Resultados: Gráficas de Convergencia de Algoritmo RLE (Run-Length Encoding)}
+
+% GRÁFICA RLE_ENCODE_NAIVE (INEFICIENTE)
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.68\linewidth]{rle_naive10k.jpg}
+    \caption{Ejecución para la función \textbf{rle\_encode\_naive} (algoritmo RLE ineficiente)}
+    \label{fig:hit}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.68\linewidth]{rle_optimized10k.jpg}
+    \caption{Ejecución para la función \textbf{rle\_encode\_optimized} (algoritmo RLE eficiente)}
+    \label{fig:hit_zoom}
+\end{figure}
+
+\vspace{0.5cm}
+
+\section{Preguntas a responder: I.B.3}
+
+\subsection{¿Cuál es el comportamiento temporal de ambas funciones al hacer crecer $n$?}
+
+\vspace{0.5cm}
+
+\begin{enumerate}
+
+    La diferencia de rendimiento entre ambas funciones radica en el coste operacional de modificar sus estructuras en memoria: la versión \textit{rle\_encode\_naive} presenta una complejidad temporal cuadrática \textbf{$\mathcal{O}(n^2)$} porque el operador `+` crea una lista totalmente nueva en el heap en cada racha y copia uno a uno los $i$ elementos acumulados previamente, generando una suma aritmética de operaciones de copia.\\
+    \\Por el contrario, la función \textit{rle\_encode\_optimized} es muy rápida y tiene una complejidad lineal \textbf{$\mathcal{O}(n)$} porque usa .append(). Este método modifica la lista directamente sobre la marcha sin duplicarla ni crear copias adicionales. Como solo necesita recorrer la lista de entrada una sola vez para contar los elementos e ir guardándolos al instante, el tiempo que tarda crece de forma directa y proporcional al tamaño de la entrada.
+    
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\subsection{¿Qué impacto tienen las operaciones internas de creación y modificación de listas en Python?}
+
+\begin{enumerate}
+
+    \vspace{0.5cm}
+    \item \textbf{Concatenación con ``+" (rle\_encode\_naive)}
+
+    Mediante la concatenación con ``+", CPython debe copiar uno a uno todos los $k$ elementos acumulados anteriormente en la nueva posición de memoria antes de añadir la nueva tupla. Además, con cada iteración se destruye la lista anterior, generando una carga continua sobre el recolector de basura (Garbage Collector).\\
+    Así, para un total de $k$ rachas en la lista, el coste acumulado de copiar memoria sigue la progresión aritmética:$$\sum_{i=1}^{k} i = \frac{k(k+1)}{2} \implies \mathcal{O}(k^2)$$
+
+    \newpage % <--- FUERZA EL SALTO A LA SIGUIENTE PÁGINA
+    \item \textbf{Modificación con .append() (rle\_encode\_optimized)}
+
+    El método .append() realiza una modificación in-place sobre el buffer interno de la lista. CPython utiliza un algoritmo de sobre-reserva de memoria (over-allocation), donde el array dinámico reserva espacio para más elementos de los requeridos en ese instante. Esto evita realocar memoria en cada inserción, garantizando un coste amortizado $\mathcal{O}(1)$ por cada operación .append(). El bucle solo recorre la lista de entrada una vez, logrando un tiempo total de $\mathcal{O}(n)$.
+    
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\section{Preguntas a responder: II.C}
+
+    \item \textbf{1. Sin darnos cuenta, en nuestro algoritmo de encontrar CCs podemos pasar listas con ramas repetidas o donde los vértices coinciden con los de una que ya está aunque en orden inverso. ¿Afectará esto al resultado del algoritmo? ¿Por qué?}
+
+    \vspace{0.3cm}
+
+\begin{enumerate}
+
+    No afecta en absoluto al resultado final. Procesar una rama repetida (u, v) o invertida (v, u) simplemente evaluará find(u) y find(v), los cuales devolverán el mismo representante al estar los nodos ya unificados. La condición rep\_u != rep\_v se evaluará como falsa y la unión no se ejecutará, siendo una operación neutra.
+    
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\item \textbf {2. Argumentar que nuestro algoritmo de encontrar componentes conexas es correcto, esto es, que a su final en los distintos subconjuntos disjuntos se encuentran los vértices de las distintas componentes del grafo dado.}
+
+\vspace{0.3cm}
+
+\begin{enumerate}
+
+     Inicialmente, cada vértice constituye su propia componente aislada. Al procesar cada arista (u, v), la función union agrupa ambos vértices respetando la propiedad de transitividad ($u \sim v$ y $v \sim w \implies u \sim w$). Así, dos nodos quedan en el mismo subconjunto si y solo si existe un camino entre ellos, garantizando que al procesar todas las ramas se obtengan las componentes conexas maximales.
+    
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\item \textbf{3. El tamaño de un grafo no dirigido viene determinado por el número n de nodos y la longitud de la lista l de ramas. Estimar razonadamente en función de ambos el coste del algoritmo de encontrar las componentes conexas mediante conjuntos disjuntos.}
+
+\vspace{0.3cm}
+
+\begin{enumerate}
+
+     Crear el array inicial de tamaño $n$ rellenándolo con $-1$ requiere escribir $n$ posiciones de memoria consecutivas, lo que lleva tiempo estrictamente lineal $\mathcal{O}(n)$. \\
+     El algoritmo recorre una a una las $\vert{}l\vert{}$ aristas de la lista $l$. En cada iteración llama a find y a union. Gracias a combinar unión por rango con compresión de caminos, la estructura de árbol se mantiene plana. Matemáticamente, el coste por arista es $\mathcal{O}(\alpha(n))$. Esta función crece de forma tan lenta que, en la práctica, cada arista se procesa en tiempo constante $\mathcal{O}(1)$, dando un coste acumulado de $\mathcal{O}(\vert{}l\vert{})$.\\
+     Para ver el resultado final, se hace un bucle que va desde $0$ hasta $n-1$, llamando a find(i) para cada nodo. Como son $n$ consultas y cada una cuesta tiempo constante, esta fase tarda $\mathcal{O}(n)$.
+
+     \end{enumerate}
+     
+     \vspace{0.5cm}
+     
+
+     \noindent Sumando los tres bloques:
+    $$\mathcal{O}(n) + \mathcal{O}(|l|) + \mathcal{O}(n) = \mathcal{O}(2n + |l|) \implies \mathcal{O}(n + |l|)$$
+
+    \noindent Es decir, el tiempo de ejecución crece de forma estrictamente lineal con respecto al tamaño total de la entrada (la suma de nodos y aristas).
+
+    
+\end{document}
+
+
+
+%adrian@adrian-ASUS-TUF-Gaming-F15-FX506HC-FX506HC:~/Escritorio/estr.avanzadas$ python3 p1.py 
+%[(3.6307400997429797e-07, 9.358898098737449e-15), (5.872991501109937e-07, 3.7711316358661695e-14), (1.3332449499739595e-06, 2.6869227050834535e-13), (2.317409220004265e-06, 1.210953116658407e-12), (4.08413600996937e-06, 4.732528463099664e-12), (6.207057630008421e-06, 1.646899710106744e-11), (1.0305757040050595e-05, 7.11303650400623e-11), (1.70727013099804e-05, 2.8704417014202793e-10), (2.629878083998847e-05, 5.792402378570654e-10), (4.0996950309890965e-05, 1.8755167706822193e-09)]
+%adrian@adrian-ASUS-TUF-Gaming-F15-FX506HC-FX506HC:~/Escritorio/estr.avanzadas$ python3 p1.py 
+%[(3.708207600266178e-07, 9.029528292365396e-15), (5.566868199912279e-07, 3.6474668375558634e-14), (1.3746251499651409e-06, 2.6572316362448556e-13), (2.112418729975616e-06, 1.0463080759273035e-12), (3.6831912500747417e-06, 5.118186060959235e-12), (6.772495399991385e-06, 2.0525972303483546e-11), (1.0176916549999078e-05, 6.608963468590204e-11), (1.4371895159993072e-05, 1.2582559544660108e-10), (2.8410048829982772e-05, 8.789799707459348e-10), (3.0449809969968554e-05, 9.772655216407642e-10)]
+%[(4.769452199525404e-07, 1.1741158661735335e-15), (9.430067700577637e-07, 8.351139345662114e-15), (2.2443178399953466e-06, 1.2763617696128799e-14), (5.099461620029616e-06, 4.6412079898297647e-14), (9.367214700014302e-06, 4.5977845254948756e-14), (2.414135960996646e-05, 3.626452956098092e-12), (4.795409676999952e-05, 2.3451509422287045e-12), (0.00011769925023993893, 2.403024828460806e-11), (0.0002941658799299603, 1.474277111694802e-10), (0.0006433640305799418, 3.5179188199702677e-10)]
+
