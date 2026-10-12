@@ -201,16 +201,6 @@ def init_cd(n: int)-> np.ndarray:
     p_cd = np.full(n, -1, dtype = int)
     return p_cd
 
-def find1(ind: int, p_cd: np.ndarray)-> int:
-    """devuelve el representante del índice ind en el conjunto disjunto almacenado en p_cd realizando compresión de caminos"""
-    for _ in range(len(p_cd)):
-        if(p_cd[ind] == -1):
-            return ind
-        else:
-            ind = p_cd[ind]
-    
-    return -2
-
 def union(rep_1: int, rep_2: int, p_cd: np.ndarray)-> int:
     """Devuelve el representante del conjunto obtenido como la unión por rangos de los representados 
     por los índices rep_1, rep_2 en el conjunto disjunto almacenado en el array p_cd.
@@ -236,3 +226,4 @@ def find(ind: int, p_cd: np.ndarray)-> int:
         rep = find(padre, p_cd)
     p_cd[ind] = rep 
     return rep
+#falta II B
