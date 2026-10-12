@@ -1,7 +1,69 @@
 import time # Para la función time_measure. Entender código dado.
 import matplotlib.pyplot as plt # Para imprimir gráficas. Entender código dado.
 import random # Puede usarse random.randint(n, m) para generar listas aleatorias de enteros en las funciones dataprep.
+from typing import List, Dict
 import numpy as np 
+
+
+# Funciones DATAPREP
+
+def dataprep_sum_pair_hit(n):
+    """Genera un caso donde SÍ existe un par que suma target.
+    Devuelve una tupla (lista, target)
+    """
+    data_list = []
+    target = random.randint(2, 2 * 10 * n)
+
+    for _ in range(n-1):
+        value = random.randint(1, 10 * n)
+        data_list.append(value)
+    sum_number = target - value
+    data_list.append(sum_number)  
+
+    random.shuffle(data_list)  
+    
+    return (data_list, target)
+
+
+def dataprep_sum_pair_miss(n):
+    """Genera un caso donde NO existe ningún par (Caso peor).
+    Devuelve una tupla (lista, target)
+    """
+    data_list = []
+    target = random.randint(2, 2 * 10 * n)
+
+    for _ in range(n):
+        while(True):
+            value = random.randint(1, 10 * n)
+            data_list.append(value)
+            if(has_sum_pair((data_list, target)) == False):
+                break
+            else:
+                data_list.pop()
+            
+
+    return (data_list, target)
+
+
+def dataprep_rle(n):
+    """Genera una lista con rachas repetidas de dimensión n.
+    Devuelve una lista.
+    """
+    data_list = []
+    
+    while len(data_list) < n:
+        val = random.randint(1, 100)
+
+        # Elegimos cuántas veces repetir el valor.
+        racha = random.randint(2, 5)
+
+        # Añadimos "racha" veces el elemento "val" al final de la lista.
+        for _ in range(racha):
+            data_list.append(val)
+
+    # Recortamos la lista a tamaño n por si nos pasamos de elementos.
+    return data_list[:n]
+
 
 # I.A.1 Medición de tiempos de ejecución
 def time_measure(f, dataprep, Nlist, Nrep=1000, Nstat=100):
@@ -25,59 +87,6 @@ def time_measure(f, dataprep, Nlist, Nrep=1000, Nstat=100):
         res.append((mean_val, var_val))
     return res
 
-def dataprep_sum_pair_hit(n):
-    """Genera un caso donde SÍ existe un par que suma target.
-    Devuelve una tupla (lista, target)
-    """
-    data_list = []
-    target = random.randint(2, 2 * 10 * n)
-
-    for _ in range(n-1):
-        value = random.randint(1, 10 * n)
-        data_list.append(value)
-    sum_number = target - value
-    data_list.append(sum_number)  
-
-    random.shuffle(data_list)  
-    
-    return (data_list, target)
-
-def dataprep_sum_pair_miss(n):
-    """Genera un caso donde NO existe ningún par (Caso peor).
-    Devuelve una tupla (lista, target)
-    """
-    data_list = []
-    target = random.randint(2, 2 * 10 * n)
-
-    for _ in range(n):
-        while(True):
-            value = random.randint(1, 10 * n)
-            data_list.append(value)
-            if(has_sum_pair((data_list, target)) == False):
-                break
-            else:
-                data_list.pop()
-            
-
-    return (data_list, target)
-
-def dataprep_rle(n):
-    """Genera una lista con rachas repetidas de dimensión n.
-    Devuelve una lista.
-    """
-    data_list = []
-    bucle = True
-
-    while(bucle):
-        value = random.randint(1, 10 * n)
-        racha = random.randint(1, n / 5)
-        for _ in range(racha):
-            data_list.append(value)
-            if len(data_list) == n:
-                bucle = False
-                break
-    
-    return data_list
 
 # I.A.2 Búsqueda de duplicados manteniendo orden de aparición
 def find_duplicates(lst):
@@ -98,6 +107,7 @@ def find_duplicates(lst):
 
     return duplicados
 
+
 # I.A.3 Búsqueda de par que suma target con complejidad O(n)
 def has_sum_pair(par):
     """Dada una tupla (lst, target), devuelve True si existen dos elementos
@@ -117,33 +127,62 @@ def has_sum_pair(par):
     return False
 
 
-
 # I.B.1 RLE Naive / Ingenuo
 def rle_encode_naive(lst):
-
-    if lst == []:
+    """Codificación RLE utilizando operador + concatenador de listas."""
+    if not lst:
         return []
     
     lst_final = []
-    count = 0
-    aux = lst[0]
+    count = 1
+    # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    aux = lst[0] 
 
-    for elem in lst:
-        if elem != aux:
+    # Se empieza desde la segunda posición de la lista.
+    for i in range(1, len(lst)):
+        elem = lst[i]
+        if elem == aux:
+            count += 1
+
+        else:
             lst_final = lst_final + [(aux, count)]
             count = 1
             aux = elem
-        else:
-            count += 1
 
+    # Añadimos el último caso tras salir del bucle.
     lst_final = lst_final + [(aux, count)]
 
     return lst_final
-        
+
+
 # I.B.2 RLE Optimized / Óptimo
 def rle_encode_optimized(lst):
     """Codificación RLE optimizada usando append in-place."""
-    pass
+
+    if not lst:
+        return []
+
+    lst_final = []
+    
+    # Guardo el primer valor de la lista para empezar a comparar a partir del 2º elemento (posición 1).
+    aux = lst[0] 
+    count = 1
+
+    # Se empieza desde la segunda posición de la lista.
+    for i in range(1, len(lst)):
+        elem = lst[i]
+        if elem == aux:
+            count += 1
+
+        else:
+            lst_final.append((aux, count))
+            aux = elem
+            count = 1
+
+    # Añadimos el último caso tras salir del bucle.
+    lst_final.append((aux, count))
+
+    return lst_final
 
 # Función auxiliar para generar una gráfica de una serie de datos.
 def plot_single_curve(
@@ -183,42 +222,42 @@ def plot_single_curve(
     # Guarda la gráfica en un fichero si se especifica un nombre
     if filename:
         plt.savefig(
-            filename, format=filename.split(".")[-1], dpi=300
+            filename, format=filename.split(".")[-1], dpi=1200
         )  #
 
     plt.show()  # Muestra la figura
 
-#Nlst = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
-#res = time_measure(has_sum_pair, dataprep_sum_pair_miss, Nlst)
-#print(res)
-#plot_single_curve(Nlst, res)
 
+# II: CONJUNTOS DISJUNTOS
 
-# II: Conjuntos Disjuntos
-
+# II.A.1
 def init_cd(n: int)-> np.ndarray:
-    """Genera un array de n enteros con todas sus posiciones inicializadas a -1"""
+    """Genera un array de n enteros con todas sus posiciones inicializadas a -1."""
     p_cd = np.full(n, -1, dtype = int)
     return p_cd
 
+
+# II.A.2
 def union(rep_1: int, rep_2: int, p_cd: np.ndarray)-> int:
     """Devuelve el representante del conjunto obtenido como la unión por rangos de los representados 
     por los índices rep_1, rep_2 en el conjunto disjunto almacenado en el array p_cd.
     """
-    if rep_1 != rep_2 and p_cd[rep_1] < 0 and p[rep_2] < 0:
+    if rep_1 != rep_2 and p_cd[rep_1] < 0 and p_cd[rep_2] < 0:
         if p_cd[rep_1] < p_cd[rep_2]: # El representante rep_1 es de mayor dimensión que el representante rep_2 -> rep_1 el padre
             p_cd[rep_2] = rep_1
             return rep_1
         else: # El representante rep_2 es de mayor o igual dimensión que el representante rep_1 -> rep_2 el padre
             if p_cd[rep_1] == p_cd[rep_2]:
-                p_cd[rep2] = p_cd[rep_2] -1
+                p_cd[rep_2] = p_cd[rep_2] -1
             p_cd[rep_1] = rep_2
             return rep_2
 
     return -2
 
+
+# II.A.3
 def find(ind: int, p_cd: np.ndarray)-> int:
-    """devuelve el representante del índice ind en el conjunto disjunto almacenado en p_cd realizando compresión de caminos"""
+    """Devuelve el representante del índice ind en el conjunto disjunto almacenado en p_cd realizando compresión de caminos."""
     if(p_cd[ind] < 0):
         return ind
     else:
@@ -226,4 +265,35 @@ def find(ind: int, p_cd: np.ndarray)-> int:
         rep = find(padre, p_cd)
     p_cd[ind] = rep 
     return rep
-#falta II B
+
+
+# II.A.4
+def cd_2_dict(p_cd: np.ndarray) -> Dict:
+    """ Devuelve un diccionario cuyas claves son los
+        representantes de los subconjuntos del CD y donde el valor de la clave u del dict es una
+        lista con los miembros del subconjunto representado por u."""
+    res = {}
+    n = len(p_cd)
+
+    for i in range(n):
+        rep = find(i, p_cd)
+        if rep not in res:
+            res[rep] = []
+
+        res[rep].append(i)
+
+    return res 
+
+
+# II.B.1
+def ccs(n: int, l: List)-> Dict:
+    """Recibe un grafo no dirigido y devuelve sus componentes conexas."""
+    p_cd = init_cd(n)
+    
+    for u, v in l:
+        rep_u = find(u, p_cd)
+        rep_v = find(v, p_cd)
+        if rep_u != rep_v:
+            union(rep_u, rep_v, p_cd)
+            
+    return cd_2_dict(p_cd)
