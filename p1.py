@@ -165,6 +165,18 @@ def rle_encode_optimized(lst):
 
     return lst_final
 
+# II.B.1
+def ccs(n, l):
+    p_cd = init_cd(n)
+    
+    for u, v in l:
+        rep_u = find(u, p_cd)
+        rep_v = find(v, p_cd)
+        if rep_u != rep_v:
+            union(rep_u, rep_v, p_cd)
+            
+    return cd_2_dict(p_cd)
+
 # Función auxiliar para generar una gráfica de una serie de datos.
 def plot_single_curve(
     x,
