@@ -54,3 +54,7 @@ lst_final2 = rle_encode_optimized(lst)
 print(lst_final)
 print(lst_final2)
 
+#Nlst = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
+#res = time_measure(has_sum_pair, dataprep_sum_pair_miss, Nlst)
+#print(res)
+#plot_single_curve(Nlst, res)

@@ -60,7 +60,7 @@ Hemos analizado el tiempo de ejecución de \texttt{has\_sum\_pair} para listas d
 
     \vspace{0.5cm}
     
-    Vemos como en general la pendiente del tiempo tiende a disminuir ligeramente o mantenerse, excepto de 500 a 1000 que aumenta ligeramente. Por lo que el tiempo tiende a aumentar de manera lineal o ligeramente sublineal a medida que $n$ crece.
+    Vemos cómo en general la pendiente del tiempo tiende a disminuir ligeramente o mantenerse, excepto de 500 a 1000 que aumenta ligeramente. Por lo que el tiempo tiende a aumentar de manera lineal o ligeramente sublineal a medida que $n$ crece.
     
 \vspace{0.5cm}
 
@@ -81,7 +81,7 @@ Hemos analizado el tiempo de ejecución de \texttt{has\_sum\_pair} para listas d
 
     \vspace{0.5cm}
     
-    Vemos como en general la pendiente del tiempo tiende a mantenerse, excepto por pequeñas variaciones que se dan en la practica. Por lo que el tiempo tiende a aumentar de manera lineal a medida que $n$ crece.
+    Vemos cómo en general la pendiente del tiempo tiende a mantenerse, excepto por pequeñas variaciones que se dan en la practica. Por lo que el tiempo tiende a aumentar de manera lineal a medida que $n$ crece.
 
     \item \textbf{¿Mantiene la función una complejidad temporal de $O(n)$?}
     \vspace{0.5cm}
@@ -93,12 +93,12 @@ Hemos analizado el tiempo de ejecución de \texttt{has\_sum\_pair} para listas d
 
 \subsection{Observaciones}
 \vspace{0.5cm}
-Vemos como el tiempo de ejecución es mayor en el caso donde no existen pares que suman target, esto es 
+Vemos cómo el tiempo de ejecución es mayor en el caso donde no existen pares que suman target, esto es 
 \indent porque has\_sum\_pair tiene que recorrer la lista entera, mientras que en el caso donde sí existen, termina de \indent recorrer la lista al encontrar ese par que suma target. 
 
 \vspace{0.2cm}
 
- \indent Además vemos como el tiempo de ejecución tiende a ser aproximadamente la mitad para el caso donde sí \indent existen pares ($1,37 \times 10^{-6}$ frente a $2,24 \times 10^{-6}$ segundos para la lista de 50 elementos o $2,11 \times 10^{-6}$ frente \indent a $5,10 \times 10^{-6}$ segundos para la lista de 100 elementos). Esto es porque de media el target se encontrará \indent aproximadamete en la mitad de la lista por lo que has\_sum\_pair recorrerá la mitad de elementos.
+ \indent Además, se aprecia cómo el tiempo de ejecución tiende a ser aproximadamente la mitad para el caso donde \indent sí existen pares ($1,37 \times 10^{-6}$ frente a $2,24 \times 10^{-6}$ segundos para la lista de 50 elementos o $2,11 \times 10^{-6}$ frente \indent a $5,10 \times 10^{-6}$ segundos para la lista de 100 elementos). Esto es porque de media el target se encontrará \indent aproximadamete en la mitad de la lista por lo que has\_sum\_pair recorrerá la mitad de elementos.
 
 \vspace{1.5cm}
 
@@ -143,13 +143,13 @@ Vemos como el tiempo de ejecución es mayor en el caso donde no existen pares qu
     \vspace{0.5cm}
     \item \textbf{Concatenación con ``+" (rle\_encode\_naive)}
 
-    Mediante la concatenación con ``+", CPython debe copiar uno a uno todos los $k$ elementos acumulados anteriormente en la nueva posición de memoria antes de añadir la nueva tupla. Además, con cada iteración se destruye la lista anterior, generando una carga continua sobre el recolector de basura (Garbage Collector).\\
-    Así, para un total de $k$ rachas en la lista, el coste acumulado de copiar memoria sigue la progresión aritmética:$$\sum_{i=1}^{k} i = \frac{k(k+1)}{2} \implies \mathcal{O}(k^2)$$
+    Mediante la concatenación con ``+", se deben copiar uno a uno todos los $i$ elementos acumulados hasta ese momento en la nueva posición de memoria antes de añadir la nueva tupla. Además, con cada iteración se destruye la lista anterior, generando más carga en el procesador (y por tanto un tiempo de ejecución mayor).\\
+    Así, para un total de $k$ rachas en la lista, el coste acumulado de copiar memoria sigue, en el peor de los casos (una lista con rachas de dimension 1 del estilo: [1, 2, 3, 4, ..., $k$]), la progresión aritmética:$$\sum_{i=1}^{k} i = \frac{k(k+1)}{2} \implies \mathcal{O}(k^2)$$
 
     \newpage % <--- FUERZA EL SALTO A LA SIGUIENTE PÁGINA
     \item \textbf{Modificación con .append() (rle\_encode\_optimized)}
 
-    El método .append() realiza una modificación in-place sobre el buffer interno de la lista. CPython utiliza un algoritmo de sobre-reserva de memoria (over-allocation), donde el array dinámico reserva espacio para más elementos de los requeridos en ese instante. Esto evita realocar memoria en cada inserción, garantizando un coste amortizado $\mathcal{O}(1)$ por cada operación .append(). El bucle solo recorre la lista de entrada una vez, logrando un tiempo total de $\mathcal{O}(n)$.
+    El método .append() realiza una modificación in-place sobre el buffer interno de la lista. Internamente, se utiliza un algoritmo de reserva extra de memoria (over-allocation), donde el array dinámico reserva espacio para más elementos de los que se requieren en ese instante. Esto evita reasignar memoria en cada inserción, garantizando un coste $\mathcal{O}(1)$ por cada operación .append(). El bucle solo recorre la lista de entrada una vez, logrando un tiempo total de $\mathcal{O}(n)$.
     
 \end{enumerate}
 
@@ -203,12 +203,3 @@ Vemos como el tiempo de ejecución es mayor en el caso donde no existen pares qu
 
     
 \end{document}
-
-
-
-%adrian@adrian-ASUS-TUF-Gaming-F15-FX506HC-FX506HC:~/Escritorio/estr.avanzadas$ python3 p1.py 
-%[(3.6307400997429797e-07, 9.358898098737449e-15), (5.872991501109937e-07, 3.7711316358661695e-14), (1.3332449499739595e-06, 2.6869227050834535e-13), (2.317409220004265e-06, 1.210953116658407e-12), (4.08413600996937e-06, 4.732528463099664e-12), (6.207057630008421e-06, 1.646899710106744e-11), (1.0305757040050595e-05, 7.11303650400623e-11), (1.70727013099804e-05, 2.8704417014202793e-10), (2.629878083998847e-05, 5.792402378570654e-10), (4.0996950309890965e-05, 1.8755167706822193e-09)]
-%adrian@adrian-ASUS-TUF-Gaming-F15-FX506HC-FX506HC:~/Escritorio/estr.avanzadas$ python3 p1.py 
-%[(3.708207600266178e-07, 9.029528292365396e-15), (5.566868199912279e-07, 3.6474668375558634e-14), (1.3746251499651409e-06, 2.6572316362448556e-13), (2.112418729975616e-06, 1.0463080759273035e-12), (3.6831912500747417e-06, 5.118186060959235e-12), (6.772495399991385e-06, 2.0525972303483546e-11), (1.0176916549999078e-05, 6.608963468590204e-11), (1.4371895159993072e-05, 1.2582559544660108e-10), (2.8410048829982772e-05, 8.789799707459348e-10), (3.0449809969968554e-05, 9.772655216407642e-10)]
-%[(4.769452199525404e-07, 1.1741158661735335e-15), (9.430067700577637e-07, 8.351139345662114e-15), (2.2443178399953466e-06, 1.2763617696128799e-14), (5.099461620029616e-06, 4.6412079898297647e-14), (9.367214700014302e-06, 4.5977845254948756e-14), (2.414135960996646e-05, 3.626452956098092e-12), (4.795409676999952e-05, 2.3451509422287045e-12), (0.00011769925023993893, 2.403024828460806e-11), (0.0002941658799299603, 1.474277111694802e-10), (0.0006433640305799418, 3.5179188199702677e-10)]
-
