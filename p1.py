@@ -1,7 +1,6 @@
 import time # Para la función time_measure. Entender código dado.
 import matplotlib.pyplot as plt # Para imprimir gráficas. Entender código dado.
 import random # Puede usarse random.randint(n, m) para generar listas aleatorias de enteros en las funciones dataprep.
-from typing import List, Dict
 import numpy as np 
 
 
@@ -268,7 +267,7 @@ def find(ind: int, p_cd: np.ndarray)-> int:
 
 
 # II.A.4
-def cd_2_dict(p_cd: np.ndarray) -> Dict:
+def cd_2_dict(p_cd: np.ndarray) -> dict:
     """ Devuelve un diccionario cuyas claves son los
         representantes de los subconjuntos del CD y donde el valor de la clave u del dict es una
         lista con los miembros del subconjunto representado por u."""
@@ -286,7 +285,7 @@ def cd_2_dict(p_cd: np.ndarray) -> Dict:
 
 
 # II.B.1
-def ccs(n: int, l: List)-> Dict:
+def ccs(n: int, l: list)-> dict:
     """Recibe un grafo no dirigido y devuelve sus componentes conexas."""
     p_cd = init_cd(n)
     
