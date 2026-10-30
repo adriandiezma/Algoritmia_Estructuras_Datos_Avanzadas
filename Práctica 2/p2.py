@@ -37,7 +37,50 @@ def optimal_change(coins: List[int], amount: int) -> Optional[List[int]]:
     Solución óptima mediante programación dinámica para el problema del cambio de monedas.
     Determina el menor número de monedas necesario para obtener la cantidad objetivo.
     """
-    pass
+    if amount == 0:
+        return []
+    
+    n = len(coins)
+    # Ordenamos las monedas, para que en caso de empate se prioricen las monedas más grandes.
+    sorted_coins = sorted(coins)
+    
+    # Matriz de estados, inicializada con infinitos
+    D = [[float('inf')] * (amount + 1) for _ in range(n + 1)]
+    
+    # Casos base (columna del cero)
+    for i in range(n + 1):
+        D[i][0] = 0
+        
+    # Rellenar la matriz de programación dinámica
+    for i in range(1, n + 1):
+        c_i = sorted_coins[i - 1]  # Valor de la moneda en la fila i
+        for a in range(1, amount + 1):
+            if a < c_i:
+                # No cabe la moneda: copiar solución de la fila superior
+                D[i][a] = D[i - 1][a]
+            else:
+                # Mínimo entre no usar la moneda i y usar al menos una moneda i
+                D[i][a] = min(D[i - 1][a], 1 + D[i][a - c_i])
+                
+    # Si la casilla final sigue siendo infinito, no es posible formar la cantidad
+    if D[n][amount] == float('inf'):
+        return None
+        
+    # Reconstrucción del resultado
+    selected = []
+    i = n
+    a = amount
+    
+    while a > 0:
+        c_i = sorted_coins[i - 1]
+        # Comprobar si se eligió la Opción B (usar la moneda c_i)
+        if a >= c_i and D[i][a] == 1 + D[i][a - c_i]:
+            selected.append(c_i)
+            a -= c_i  # Restar el valor pagado
+        else:
+            i -= 1    # No se usó esta moneda: subir a la fila superior
+            
+    return selected
 
 def compare_change(coins: List[int], max_amount: int) -> Dict[str, List[int]]:
     """
