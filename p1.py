@@ -306,4 +306,4 @@ def ccs(n: int, l: list)-> dict:
         if rep_u != rep_v:
             union(rep_u, rep_v, p_cd)
             
-    return cd_2_dict(p_cd)
+    return cd_2_dict(p_cd)  
