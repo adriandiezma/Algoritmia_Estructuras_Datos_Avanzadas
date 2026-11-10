@@ -176,11 +176,49 @@ def job_scheduling(jobs: List[Tuple[str, int, int]]) -> Tuple[List[Optional[Tupl
     Planificación de tareas de duración unitaria con fecha límite (deadline).
     Devuelve la secuencia de tareas asignadas (con None para intervalos vacíos) y el beneficio total.
     """
-    pass
+    if not jobs:
+        return ([], 0)
+
+    # Determinar el máximo deadline para fijar la longitud de la lista resultante
+    max_deadline = max(job[2] for job in jobs)
+    schedule: List[Optional[Tuple[str, int, int]]] = [None] * max_deadline
+
+    # Ordenar tareas:
+    # 1. Beneficio decreciente (-job[1])
+    # 2. Deadline ascendente (job[2])
+    # 3. Identificador orden lexicográfico (job[0])
+    sorted_jobs = sorted(jobs, key=lambda x: (-x[1], x[2], x[0]))
+
+    total_profit = 0
+
+    # Asignar cada tarea al último intervalo libre que no supere su deadline
+    for job in sorted_jobs:
+        _, profit, deadline = job
+        
+        # El intervalo 1 es el índice 0.
+        # Iteramos hacia atrás desde el deadline hacia el primer intervalo.
+        for slot in range(deadline - 1, -1, -1):
+            if schedule[slot] is None:
+                schedule[slot] = job
+                total_profit += profit
+                break
+
+    return (schedule, total_profit)
 
 def generate_jobs(n: int, seed: int = 42) -> List[Tuple[str, int, int]]:
     """
     Genera n tareas aleatorias con fecha límite reproducibles.
     profit en [1, 1000], deadline en [1, max(1, n // 10)].
     """
-    pass
+    rng = random.Random(seed)
+    jobs = []
+    
+    max_deadline = max(1, n // 10)
+
+    for i in range(n):
+        identifier = f"J{i}"
+        profit = rng.randint(1, 1000)
+        deadline = rng.randint(1, max_deadline)
+        jobs.append((identifier, profit, deadline))
+
+    return jobs
